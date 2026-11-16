@@ -1,0 +1,17 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/accounts/11111111-1111-1111-1111-111111111111"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "id": "11111111-1111-1111-1111-111111111111",
+      "active": true,
+      "currency": "EUR"
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

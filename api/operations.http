@@ -1,0 +1,37 @@
+@base = http://localhost:8080
+@account = 11111111-1111-1111-1111-111111111111
+@operation = 22222222-2222-2222-2222-222222222222
+
+### Register; repeat with the same key and body to get 200 instead of 201
+POST {{base}}/api/v1/operations
+Content-Type: application/json
+Idempotency-Key: 44444444-4444-4444-4444-444444444444
+
+{"accountId":"{{account}}","amount":125.50,"currency":"EUR","description":"Invoice INV-1042"}
+
+### Operation from seed.sql; replace operation with the id from registration if needed
+GET {{base}}/api/v1/operations/{{operation}}
+
+### Account history
+GET {{base}}/api/v1/operations?accountId={{account}}&size=20&page=0
+
+### Start processing
+PATCH {{base}}/api/v1/operations/{{operation}}/status
+Content-Type: application/json
+
+{"status":"PROCESSING","reason":"Accepted by processor"}
+
+### Cancel a NEW operation
+POST {{base}}/api/v1/operations/{{operation}}/cancel
+Content-Type: application/json
+
+{"reason":"Customer request"}
+
+### Status journal
+GET {{base}}/api/v1/operations/{{operation}}/history
+
+### Allowed transitions
+GET {{base}}/api/v1/operations/{{operation}}/transitions
+
+### Summary
+GET {{base}}/api/v1/operations/summary?accountId={{account}}
